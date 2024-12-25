@@ -80,11 +80,12 @@
         const now = new Date().getTime();
         const timeLeft = targetDate - now;
 
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24)); // Calculate the days left
         const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        countdownElement.innerHTML = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        countdownElement.innerHTML = `${pad(days)} days ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 
         if (timeLeft <= 0) {
             clearInterval(countdownInterval);
