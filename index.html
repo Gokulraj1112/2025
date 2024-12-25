@@ -7,11 +7,17 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #2e2e2e;
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
             color: white;
             text-align: center;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            animation: backgroundChange 30s infinite alternate;
+        }
+        @keyframes backgroundChange {
+            0% { background: linear-gradient(45deg, #ff6a00, #ee0979); }
+            100% { background: linear-gradient(45deg, #3b8d99, #6a3093); }
         }
         .container {
             padding-top: 100px;
@@ -20,10 +26,12 @@
             font-size: 60px;
             font-weight: bold;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         .message {
             font-size: 30px;
             color: #f39c12;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         #fireworks {
             position: absolute;
@@ -44,7 +52,6 @@
         }
         .confetti .confetto {
             position: absolute;
-            background-color: #ffdd57;
             width: 10px;
             height: 10px;
             opacity: 0.8;
@@ -54,6 +61,12 @@
         @keyframes fall {
             0% { transform: translateY(-100px); }
             100% { transform: translateY(100vh); }
+        }
+        .confetto:nth-child(odd) {
+            background-color: #ff6a00;
+        }
+        .confetto:nth-child(even) {
+            background-color: #f39c12;
         }
     </style>
 </head>
@@ -114,13 +127,15 @@
                 const radius = Math.random() * 150;
                 const alpha = Math.random() * 0.7 + 0.3;
                 ctx.beginPath();
-                ctx.arc(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, 3, 0, Math.PI * 2);
+                ctx.arc(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, Math.random() * 3 + 2, 0, Math.PI * 2);
                 ctx.fillStyle = color;
                 ctx.fill();
             }
         }
 
         drawFirework(window.innerWidth / 2, window.innerHeight / 2, "gold");
+        drawFirework(window.innerWidth / 2, window.innerHeight / 3, "red");
+        drawFirework(window.innerWidth / 2, window.innerHeight / 4, "blue");
 
         setTimeout(() => {
             fireworksCanvas.style.display = "none";
