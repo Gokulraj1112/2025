@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Year 2025 Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #2e2e2e;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding-top: 100px;
+        }
+        .countdown {
+            font-size: 60px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 30px;
+            color: #f39c12;
+        }
+        #fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+        .confetti {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            display: none;
+        }
+        .confetti .confetto {
+            position: absolute;
+            background-color: #ffdd57;
+            width: 10px;
+            height: 10px;
+            opacity: 0.8;
+            border-radius: 50%;
+            animation: fall 2s infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100px); }
+            100% { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="countdown" id="countdown">00:00:00</div>
+    <div class="message" id="message">Time left until New Year 2025!</div>
+</div>
+
+<canvas id="fireworks"></canvas>
+<div class="confetti" id="confetti"></div>
+
+<script>
+    const countdownElement = document.getElementById("countdown");
+    const messageElement = document.getElementById("message");
+    const fireworksCanvas = document.getElementById("fireworks");
+    const confettiDiv = document.getElementById("confetti");
+
+    const targetDate = new Date("January 1, 2025 00:00:00").getTime();
+
+    // Countdown Timer Function
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeLeft = targetDate - now;
+
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        countdownElement.innerHTML = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            countdownElement.innerHTML = "Happy New Year 2025!";
+            messageElement.innerHTML = "";
+            showFireworks();
+            showConfetti();
+        }
+    }
+
+    function pad(number) {
+        return number < 10 ? "0" + number : number;
+    }
+
+    // Fireworks Animation
+    function showFireworks() {
+        fireworksCanvas.style.display = "block";
+        const ctx = fireworksCanvas.getContext("2d");
+
+        fireworksCanvas.width = window.innerWidth;
+        fireworksCanvas.height = window.innerHeight;
+
+        function drawFirework(x, y, color) {
+            for (let i = 0; i < 100; i++) {
+                const angle = Math.random() * 2 * Math.PI;
+                const radius = Math.random() * 150;
+                const alpha = Math.random() * 0.7 + 0.3;
+                ctx.beginPath();
+                ctx.arc(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, 3, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+            }
+        }
+
+        drawFirework(window.innerWidth / 2, window.innerHeight / 2, "gold");
+
+        setTimeout(() => {
+            fireworksCanvas.style.display = "none";
+        }, 3000);
+    }
+
+    // Confetti Effect
+    function showConfetti() {
+        confettiDiv.style.display = "block";
+        for (let i = 0; i < 200; i++) {
+            let confetto = document.createElement("div");
+            confetto.classList.add("confetto");
+            confetto.style.left = Math.random() * 100 + "vw";
+            confetto.style.animationDelay = Math.random() * 2 + "s";
+            confetto.style.animationDuration = Math.random() * 3 + 2 + "s";
+            confettiDiv.appendChild(confetto);
+        }
+
+        setTimeout(() => {
+            confettiDiv.style.display = "none";
+        }, 5000);
+    }
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
